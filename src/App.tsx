@@ -1,9 +1,52 @@
-import './App.css'
+import {
+  Routes,
+  Route,
+  useNavigationType,
+  useLocation,
+} from "react-router-dom";
+import Frame from "./pages/Frame";
+import { useEffect } from "react";
 
-export default function App() {
+function App() {
+  const action = useNavigationType();
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  useEffect(() => {
+    if (action !== "POP") {
+      window.scrollTo(0, 0);
+    }
+  }, [action, pathname]);
+
+  useEffect(() => {
+    let title = "";
+    let metaDescription = "";
+
+    switch (pathname) {
+      case "/":
+        title = "";
+        metaDescription = "";
+        break;
+    }
+
+    if (title) {
+      document.title = title;
+    }
+
+    if (metaDescription) {
+      const metaDescriptionTag: HTMLMetaElement | null = document.querySelector(
+        'head > meta[name="description"]'
+      );
+      if (metaDescriptionTag) {
+        metaDescriptionTag.content = metaDescription;
+      }
+    }
+  }, [pathname]);
+
   return (
-    <main>
-      React ⚛️ + Vite ⚡ + Replit 🌀
-    </main>
-  )
+    <Routes>
+      <Route path="/" element={<Frame />} />
+    </Routes>
+  );
 }
+export default App;
