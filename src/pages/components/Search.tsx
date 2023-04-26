@@ -1,24 +1,136 @@
 import { FunctionComponent } from "react";
 import styles from "./Search.module.css";
-const Divrow: FunctionComponent = () => {
+import React, { useState, useEffect } from 'react';
+
+const catBreeds = [
+  "Breeds",
+  "Abyssinian",
+  "American Bobtail",
+  "American Curl",
+  "American Shorthair",
+  "American Wirehair",
+  "Balinese",
+  "Bengal",
+  "Birman",
+  "Bombay",
+  "British Shorthair",
+  "Burmese",
+  "Burmilla",
+  "Chartreux",
+  "Chausie",
+  "Cornish Rex",
+  "Cymric",
+  "Devon Rex",
+  "Egyptian Mau",
+  "Exotic Shorthair",
+  "Havana Brown",
+  "Himalayan",
+  "Japanese Bobtail",
+  "Javanese",
+  "Korat",
+  "LaPerm",
+  "Maine Coon",
+  "Manx",
+  "Munchkin",
+  "Nebelung",
+  "Norwegian Forest",
+  "Ocicat",
+  "Oriental",
+  "Persian",
+  "Pixiebob",
+  "Ragdoll",
+  "Russian Blue",
+  "Savannah",
+  "Scottish Fold",
+  "Selkirk Rex",
+  "Siamese",
+  "Siberian",
+  "Singapura",
+  "Snowshoe",
+  "Somali",
+  "Sphynx",
+  "Tonkinese",
+  "Turkish Angora",
+  "Turkish Van"
+];
+
+const locations = [
+  "Locations",
+  "Central",
+  "Causeway Bay",
+  "Tsim Sha Tsui",
+  "Mong Kok",
+  "Wan Chai",
+  "Sheung Wan",
+  "Admiralty",
+  "Quarry Bay",
+  "Yau Ma Tei",
+  "Sham Shui Po",
+];
+
+const Search: FunctionComponent<{ onSearch: (location: string, gender: string, breed: string) => void }> = ({ onSearch }) => {
+  const [location, setLocation] = useState("");
+  const [gender, setGender] = useState("");
+  const [breed, setBreed] = useState("");
+
+  function handleClick() {
+    onSearch(location, gender, breed);
+  }
+
+  function handleLocationChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    if (event.target.value === "Locations") {
+      setLocation("");
+    }else{
+      setLocation(event.target.value);
+    }
+  }
+
+  function handleGenderChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    if (event.target.value === "Gender") {
+      setGender("");
+    }else{
+      setGender(event.target.value);
+    }
+  }
+
+  function handleBreedChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    if (event.target.value === "Breeds") {
+      setBreed("");
+    }else{
+      setBreed(event.target.value);
+    }
+  }
+
   return (
     <div className={styles.divrow}>
       <div className={styles.selectarea}>
-        <div className={styles.div}>
-          <div className={styles.location}>Location</div>
+        <div id="locationDropdown" className={styles.div}>
+          <select className={styles.location} onChange={handleLocationChange}>
+            {locations.map((location) => (
+              <option key={location} value={location}>{location}</option>
+            ))}
+          </select>
         </div>
       </div>
       <div className={styles.selectsex}>
-        <div className={styles.div1}>
-          <div className={styles.gender}>Gender</div>
+        <div id="genderDropdown" className={styles.div}>
+          <select className={styles.location} onChange={handleGenderChange}>
+            <option value="Gender">Gender</option>
+            <option value="male">male</option>
+            <option value="female">female</option>
+          </select>
         </div>
       </div>
       <div className={styles.selectanimal}>
-        <div className={styles.div1}>
-          <div className={styles.gender}>Breed</div>
+        <div id="breedDropdown" className={styles.div}>
+          <select className={styles.location} onChange={handleBreedChange}>
+            {catBreeds.map((breed, index) => (
+              <option key={index} value={breed}>{breed}</option>
+            ))}
+          </select>
         </div>
       </div>
-      <button className={styles.inputbtn} autoFocus>
+      <button className={styles.inputbtn} autoFocus onClick={handleClick}>
         <div className={styles.search}>Search</div>
       </button>
       <button className={styles.inputbtn1} autoFocus>
@@ -28,4 +140,5 @@ const Divrow: FunctionComponent = () => {
   );
 };
 
-export default Divrow;
+
+export default Search;

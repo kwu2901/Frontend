@@ -1,6 +1,21 @@
 import { FunctionComponent } from "react";
 import styles from "./Card.module.css";
-const Divrow1: FunctionComponent = () => {
+
+type Cat = {
+  cat_name: string;
+  age: number;
+  breed: string;
+  gender: string;
+  location: string;
+  describe: string;
+  image: string;
+}
+
+type Props = {
+  cats: Cat[];
+};
+
+const Card: FunctionComponent<Props> = ({ cats }) => {
   return (
     <div className={styles.divrow}>
       <div className={styles.divmedia}>
@@ -11,37 +26,40 @@ const Divrow1: FunctionComponent = () => {
         />
         <div className={styles.divmediaBody}>
           <div className={styles.atextWhite}>
-            <a
-              className={styles.a}
-              href="https://wepet.tw/%E9%A0%98%E9%A4%8A%E8%B3%87%E8%A8%8A-230423000106308813242"
-              target="_blank"
-            >
-              初一
+            <a className={styles.a} target="_blank">
+              {cats.cat_name}
             </a>
           </div>
           <div className={styles.ullistUnstyled}>
             <div className={styles.litextWhite}>
               <img className={styles.frameIcon} alt="" src="/frame.svg" />
-              <div className={styles.div}>貓</div>
+              <div className={styles.div}>
+                {cats.age}
+              </div>
             </div>
             <div className={styles.litextWhite}>
               <img className={styles.frameIcon1} alt="" src="/frame1.svg" />
-              <div className={styles.div}>母</div>
+              <div className={styles.div}>
+                {cats.gender}
+              </div>
             </div>
             <div className={styles.litextWhite}>
               <img className={styles.frameIcon2} alt="" src="/frame2.svg" />
-              <div className={styles.div2}>彰化縣</div>
+              <div className={styles.div2}>
+                {cats.location}
+              </div>
             </div>
             <div className={styles.litextWhite}>
               <img className={styles.frameIcon2} alt="" src="/frame3.svg" />
-              <div className={styles.div3}>幼年小型米克斯</div>
+              <div className={styles.div3}>
+                {cats.breed}
+              </div>
             </div>
           </div>
           <div className={styles.ptextWhite}>
             <div className={styles.div4}>
-              眼睛一眼有感染但已看獸醫健康狀況良
+              {cats.describe}
             </div>
-            <div className={styles.div}>好</div>
           </div>
           <div className={styles.abtn}>
             <div className={styles.div6}>
@@ -60,4 +78,4 @@ const Divrow1: FunctionComponent = () => {
   );
 };
 
-export default Divrow1;
+export default Card;

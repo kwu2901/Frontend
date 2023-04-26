@@ -1,10 +1,45 @@
 import { FunctionComponent } from "react";
+import React, { useState, useEffect } from 'react';
 import Header from "./components/Header";
 import Card from "./components/Card";
 import Search from "./components/Search";
 import Footer from "./components/Footer";
 import styles from "./Frame.module.css";
+
+type Cat = {
+  cat_name: string;
+  age: number;
+  breed: string;
+  gender: string;
+  location: string;
+  describe: string;
+  image: string;
+}
+
+async function fetchFilteredCats(location: string, gender: string, breed: string) {
+  const response = await fetch(`https://backend.kwu2901.repl.co/catList?location=${location}&gender=${gender}&breed=${breed}`);
+  const data = await response.json();
+  return data;
+}
+
 const Frame: FunctionComponent = () => {
+  const [cats, setCats] = useState<Cat[]>([]);
+
+  function handleSearch(location: string, gender: string, breed: string) {
+    fetchFilteredCats(location, gender, breed).then((data) => {
+      setCats(data);
+    });
+  }
+  
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch('https://backend.kwu2901.repl.co/catList');
+      const data = await response.json();
+      setCats(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className={styles.frame}>
       <Header />
@@ -15,8 +50,10 @@ const Frame: FunctionComponent = () => {
           </div>
         </div>
         <div className={styles.divcontainer}>
-          <Search />
-          <Card />
+        <Search onSearch={handleSearch} />
+          {cats.map((cat, index) => (
+        <Card key={index} cats={cat} />
+      ))}
         </div>
         <div className={styles.ulpagination}>
           <div className={styles.spanpageLinkParent}>

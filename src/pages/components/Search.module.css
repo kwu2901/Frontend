@@ -1,10 +1,10 @@
 .location {
   position: relative;
-  line-height: 16px;
+  line-height: 20px;
   display: flex;
   align-items: center;
-  width: 99px;
-  height: 16px;
+  width: 120px;
+  height: 20px;
   flex-shrink: 0;
 }
 .div,
@@ -14,8 +14,8 @@
   flex-direction: column;
 }
 .div {
-  width: 99px;
-  height: 18px;
+  width: 120px;
+  height: 20px;
   flex-shrink: 0;
   overflow: hidden;
   padding: 0.910003662109375px 0;
@@ -38,11 +38,11 @@
 }
 .gender {
   position: relative;
-  line-height: 16px;
+  line-height: 20px;
   display: flex;
   align-items: center;
-  width: 56.2px;
-  height: 16px;
+  width: 120px;
+  height: 20px;
   flex-shrink: 0;
 }
 .div1,

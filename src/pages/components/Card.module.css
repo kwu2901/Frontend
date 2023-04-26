@@ -82,7 +82,7 @@
 .div2 {
   display: flex;
   align-items: center;
-  width: 42.2px;
+  width: 98.2px;
 }
 .div3 {
   width: 98.2px;
@@ -227,8 +227,8 @@
 }
 .divrow {
   position: relative;
-  width: 1170px;
-  height: 1550px;
+  width: 585px;
+  height: 300px;
   flex-shrink: 0;
   text-align: left;
   font-size: var(--font-size-sm);
