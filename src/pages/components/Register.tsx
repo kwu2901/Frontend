@@ -3,19 +3,69 @@ import styles from "./Login.module.css";
 
 interface RegisterProps {
   onClose: () => void;
+  onRegisterSucc: () => void;
 }
 
-const Register: FunctionComponent<RegisterProps> = ({ onClose }) => {
+const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [staffCode, setStaffCode] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Call API with registration information
+
+    let isStaff = false;
+    if (staffCode !== "") {
+      try {
+        const response = await fetch(`https://backend.kwu2901.repl.co/staffCode/${staffCode}`);
+        const data = await response.json();
+        if (data) {
+          isStaff = true;
+        } else {
+          alert("Staff code not found.");
+          return;
+        }
+      } catch (err) {
+        console.log(err);
+        alert("An error occurred while checking staff code.");
+        return;
+      }
+    }
+
+    try {
+      const response = await fetch("https://backend.kwu2901.repl.co/addUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          username,
+          password,
+          staff: isStaff,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if(isStaff){
+      const responseStaffCode = await fetch("https://backend.kwu2901.repl.co/addStaffCode", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          staff_id: data._id,
+        }),
+      });
+      const dataStaffCode = await responseStaffCode.json();
+      console.log(dataStaffCode);
+      }
+      alert("Registration successful!");
+      onRegisterSucc();
+    } catch (err) {
+      console.log(err);
+      alert("An error occurred while registering.");
+    }
   };
+
 
   return (
     <div className={styles.modal}>

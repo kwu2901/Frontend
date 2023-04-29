@@ -2,15 +2,21 @@ import { useState } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import styles from "./Header.module.css";
+import Avatar from "./Avatar";
+import { User } from "../model/UserModel";
+import { CurrentUser } from "../model/CurrentUser";
+
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-
-  const handleLoginSubmit = (email: string, password: string) => {
-    // Call API to log in user
-    // ...
-    // If successful, hide login modal
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  
+  const handleLoginSucc = (user: User, token: string) => {
+    console.log(token);
+    setToken(token);
+    setUser(user);
     setShowLogin(false);
   };
 
@@ -23,10 +29,19 @@ const Header = () => {
     setShowRegister(true);
   };
 
-    const handleRegisterClose = () => {
+  const handleRegisterClose = () => {
     setShowRegister(false);
   };
 
+  const handleRegisterSucc = () => {
+    setShowRegister(false);
+    setShowLogin(true);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setToken(null);
+  };
   return (
     <div className={styles.headerpagetop}>
       <div className={styles.navnavbar}>
@@ -53,17 +68,28 @@ const Header = () => {
                 <div className={styles.message}>favourites</div>
               </div>
             </div>
+            {user? (
             <div className={styles.anavLink2}>
-              <img
-                className={styles.ifaEyeIcon}
-                alt=""
+              <Avatar
+                src={user.usericon ?? "/placeholder.jpg"}
+                onClick={() => handleLogout()}
+              />
+              <div className={styles.spanjumpText}>
+                <div className={styles.signUp}>log out</div>                
+              </div>
+            </div>
+            ):(
+            <div className={styles.anavLink2}>
+              <Avatar
                 src="/ifauser.svg"
                 onClick={() => setShowLogin(true)}
               />
               <div className={styles.spanjumpText}>
-                <div className={styles.signUp}>sign up</div>
+                <div className={styles.signUp}>sign up</div>                
               </div>
             </div>
+            )}
+            
           </div>
         </div>
       </div>
@@ -71,12 +97,13 @@ const Header = () => {
         <Login
           onClose={handleLoginClose}
           onRegister={handleRegisterClick}
-          onSubmit={handleLoginSubmit}
+          onLoginSucc={handleLoginSucc}
         />
       )}
       {showRegister && (
-        <Register 
+        <Register
           onClose={handleRegisterClose}
+          onRegisterSucc={handleRegisterSucc}
         />
       )}
     </div>

@@ -1,18 +1,46 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import styles from "./Login.module.css";
+import { User } from "../model/UserModel";
 
 interface Props {
   onClose: () => void;
   onRegister: () => void;
-  onSubmit: (email: string, password: string) => void;
+  onLoginSucc: (user: User, token: string) => void;
 }
 
-const Login: FunctionComponent<Props> = ({ onClose, onRegister, onSubmit }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+interface LoginResponse {
+  token: string;
+  user: User;
+}
+
+const Login: FunctionComponent<Props> = ({ onClose, onRegister, onLoginSucc }) => {
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const email = event.currentTarget.email.value;
     const password = event.currentTarget.password.value;
-    onSubmit(email, password);
+
+    try {
+      const response = await fetch("https://backend.kwu2901.repl.co/Login", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({
+           email,
+           password
+         }),
+       });
+      if (!response.ok) {
+        alert("Invalid email or password.");
+        return;
+      }
+      const { token, user }: LoginResponse = await response.json();
+
+      alert("Login Succ!");
+      onLoginSucc(user, token);
+    } catch (err) {
+      console.log(err.message);
+      alert("Authentication failed");
+    }
   };
 
   return (
