@@ -1,11 +1,14 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 import styles from "./Login.module.css";
 import { User } from "../model/UserModel";
+import { FcGoogle } from "react-icons/fc";
+import { AiFillGithub } from "react-icons/ai";
+import Button from "./Button";
 
 interface Props {
   onClose: () => void;
   onRegister: () => void;
-  onLoginSucc: (user: User, token: string) => void;
+  onLoginSucc: () => void;
 }
 
 interface LoginResponse {
@@ -22,21 +25,22 @@ const Login: FunctionComponent<Props> = ({ onClose, onRegister, onLoginSucc }) =
 
     try {
       const response = await fetch("https://backend.kwu2901.repl.co/Login", {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({
-           email,
-           password
-         }),
-       });
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password
+        }),
+      });
       if (!response.ok) {
         alert("Invalid email or password.");
         return;
       }
       const { token, user }: LoginResponse = await response.json();
-
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
       alert("Login Succ!");
-      onLoginSucc(user, token);
+      onLoginSucc();
     } catch (err) {
       console.log(err.message);
       alert("Authentication failed");
@@ -63,7 +67,22 @@ const Login: FunctionComponent<Props> = ({ onClose, onRegister, onLoginSucc }) =
             <button type="submit">Submit</button>
           </div>
         </form>
+        <div className={styles.form}>
+          <Button
+            outline
+            label="Continue with Google"
+            icon={FcGoogle}
+            onClick={() => { }}
+          />
+          <Button
+            outline
+            label="Continue with Github"
+            icon={AiFillGithub}
+            onClick={() => {}}
+          />
+        </div>
         <div className={styles.register}>
+          First time using Pet Shelter?　　
           <button onClick={onRegister}>Register</button>
         </div>
       </div>

@@ -1,17 +1,17 @@
-.overlay {
+.modal {
+  display: flex;
   position: fixed;
-  top: 0;
-  left: 0;
   z-index: 1;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal {
+.modalContent {
   background-color: #fefefe;
   padding: 20px;
   border: 1px solid #888;
@@ -21,48 +21,65 @@
   align-items: center;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 1em;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5em;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  padding: 0.5em;
-  border-radius: 5px;
-  border: 1px solid gray;
-  margin-bottom: 1em;
-}
-
-.checkboxGroup {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5em;
-}
-
-.checkboxGroup label {
-  margin-left: 0.5em;
-}
-
-.buttonGroup {
-  display: flex;
-  justify-content: space-between;
-}
-
 .close {
   align-self: flex-end;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+label {
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+input {
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+.register {
+  margin-top: 10px;
+  font-size: 15px;
+  text-align: center;
+}
+
+.register button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.register button:hover {
+  background-color: #0c7cd5;
 }

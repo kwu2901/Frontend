@@ -1,5 +1,8 @@
 import { FunctionComponent, useState } from "react";
-import styles from "./Login.module.css";
+import styles from "./Register.module.css";
+import { FcGoogle } from "react-icons/fc";
+import { AiFillGithub } from "react-icons/ai";
+import Button from "./Button";
 
 interface RegisterProps {
   onClose: () => void;
@@ -47,16 +50,16 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
       });
       const data = await response.json();
       console.log(data);
-      if(isStaff){
-      const responseStaffCode = await fetch("https://backend.kwu2901.repl.co/addStaffCode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          staff_id: data._id,
-        }),
-      });
-      const dataStaffCode = await responseStaffCode.json();
-      console.log(dataStaffCode);
+      if (isStaff) {
+        const responseStaffCode = await fetch("https://backend.kwu2901.repl.co/addStaffCode", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            staff_id: data._id,
+          }),
+        });
+        const dataStaffCode = await responseStaffCode.json();
+        console.log(dataStaffCode);
       }
       alert("Registration successful!");
       onRegisterSucc();
@@ -74,14 +77,12 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
           &times;
         </span>
         <h3 className={styles.title}>Register</h3>
-        <form onSubmit={handleSubmit}>
-          <div className={styles.inputContainer}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
             <label className={styles.label} htmlFor="username">
               Username:
             </label>
-            <br />
             <input
-              className={styles.input}
               type="text"
               id="username"
               value={username}
@@ -89,13 +90,11 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               required
             />
           </div>
-          <div className={styles.inputContainer}>
+          <div className={styles.formGroup}>
             <label className={styles.label} htmlFor="email">
               Email:
             </label>
-            <br />
             <input
-              className={styles.input}
               type="email"
               id="email"
               value={email}
@@ -103,13 +102,11 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               required
             />
           </div>
-          <div className={styles.inputContainer}>
+          <div className={styles.formGroup}>
             <label className={styles.label} htmlFor="password">
               Password:
             </label>
-            <br />
             <input
-              className={styles.input}
               type="password"
               id="password"
               value={password}
@@ -117,37 +114,47 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               required
             />
           </div>
-          <div className={styles.inputContainer}>
-            <input
-              className={styles.checkbox}
-              type="checkbox"
-              id="staffCodeCheckbox"
-              checked={isChecked}
-              onChange={() => setIsChecked(!isChecked)}
-            />
-            <label className={styles.label} htmlFor="staffCodeCheckbox">
-              I have a staff code
-            </label>
-            <br />
-          </div>
-          {isChecked && (
-            <div className={styles.inputContainer}>
+          <div className={styles.formGroup}>
+            <div>
               <input
-                className={styles.input}
+                type="checkbox"
+                id="staffCodeCheckbox"
+                checked={isChecked}
+                onChange={() => setIsChecked(!isChecked)}
+              />
+              <label htmlFor="staffCodeCheckbox">
+                I have a staff code
+              </label>
+            </div>
+            {isChecked && (
+              <input
                 type="text"
                 id="staffCode"
                 value={staffCode}
                 onChange={(e) => setStaffCode(e.target.value)}
                 required
               />
-            </div>
-          )}
-          <div className={styles.buttonContainer}>
-            <button type="submit" className={styles.submitButton}>
-              Register
-            </button>
+            )}
           </div>
+          <button type="submit" className={styles.submitButton}>
+            Submit
+          </button>
         </form>
+        <br/>
+        <div className={styles.form}>
+          <Button
+            outline
+            label="Continue with Google"
+            icon={FcGoogle}
+            onClick={() => { }}
+          />
+          <Button
+            outline
+            label="Continue with Github"
+            icon={AiFillGithub}
+            onClick={() => { }}
+          />
+        </div>
       </div>
     </div>
   );

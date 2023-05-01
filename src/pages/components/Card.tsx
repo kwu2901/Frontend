@@ -1,5 +1,7 @@
 import { FunctionComponent } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Card.module.css";
+import { User } from "../model/UserModel";
 
 type Cat = {
   cat_name: string;
@@ -16,6 +18,14 @@ type Props = {
 };
 
 const Card: FunctionComponent<Props> = ({ cats }) => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+    }
+  }, []);
   return (
     <div className={styles.divrow}>
       <div className={styles.divmedia}>
@@ -24,6 +34,9 @@ const Card: FunctionComponent<Props> = ({ cats }) => {
           alt=""
           src="/adopt-230423000106308813242-5386079266jpg@2x.png"
         />
+        <button className={styles.inputbtn2} autoFocus>
+          <img className={styles.inputbtnChild} alt="" src="/star-2.svg" />
+        </button>
         <div className={styles.divmediaBody}>
           <div className={styles.atextWhite}>
             <a className={styles.a} target="_blank">
@@ -66,12 +79,12 @@ const Card: FunctionComponent<Props> = ({ cats }) => {
               <div className={styles.contactUs}>contact us</div>
             </div>
           </div>
-          <button className={styles.inputbtn} autoFocus>
-            <div className={styles.edit}>Edit</div>
-          </button>
-          <button className={styles.inputbtn} autoFocus>
-            <img className={styles.inputbtnChild} alt="" src="/star-1.svg" />
-          </button>
+          {user?.staff  ? (
+              <button className={styles.inputbtn} autoFocus>
+                <div className={styles.edit}>Edit</div>
+              </button>
+            ) : null
+            }
         </div>
       </div>
     </div>

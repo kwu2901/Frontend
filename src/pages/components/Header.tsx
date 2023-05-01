@@ -1,23 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "./Login";
 import Register from "./Register";
 import styles from "./Header.module.css";
 import Avatar from "./Avatar";
 import { User } from "../model/UserModel";
-import { CurrentUser } from "../model/CurrentUser";
+//import { CurrentUser } from "../model/CurrentUser";
 
 
 const Header = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  //const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  
-  const handleLoginSucc = (user: User, token: string) => {
-    console.log(token);
-    setToken(token);
-    setUser(user);
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+    }
+  }, []);
+
+  const handleLoginSucc = () => {
+    const userFromSession = localStorage.getItem('user');
+    if (userFromSession) {
+      setUser(JSON.parse(userFromSession));
+    }
     setShowLogin(false);
+    window.location.reload();
   };
 
   const handleLoginClose = () => {
@@ -40,7 +49,10 @@ const Header = () => {
 
   const handleLogout = () => {
     setUser(null);
-    setToken(null);
+    //setToken(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.reload();
   };
   return (
     <div className={styles.headerpagetop}>
@@ -68,28 +80,28 @@ const Header = () => {
                 <div className={styles.message}>favourites</div>
               </div>
             </div>
-            {user? (
-            <div className={styles.anavLink2}>
-              <Avatar
-                src={user.usericon ?? "/placeholder.jpg"}
-                onClick={() => handleLogout()}
-              />
-              <div className={styles.spanjumpText}>
-                <div className={styles.signUp}>log out</div>                
+            {user ? (
+              <div className={styles.anavLink2}>
+                <Avatar
+                  src={user.usericon ?? "/placeholder.jpg"}
+                  onClick={() => handleLogout()}
+                />
+                <div className={styles.spanjumpText}>
+                  <div className={styles.signUp}>log out</div>
+                </div>
               </div>
-            </div>
-            ):(
-            <div className={styles.anavLink2}>
-              <Avatar
-                src="/ifauser.svg"
-                onClick={() => setShowLogin(true)}
-              />
-              <div className={styles.spanjumpText}>
-                <div className={styles.signUp}>sign up</div>                
+            ) : (
+              <div className={styles.anavLink2}>
+                <Avatar
+                  src="/ifauser.svg"
+                  onClick={() => setShowLogin(true)}
+                />
+                <div className={styles.spanjumpText}>
+                  <div className={styles.signUp}>sign up</div>
+                </div>
               </div>
-            </div>
             )}
-            
+
           </div>
         </div>
       </div>

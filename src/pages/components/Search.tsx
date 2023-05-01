@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import styles from "./Search.module.css";
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { User } from "../model/UserModel";
 
 const catBreeds = [
   "Breeds",
@@ -72,7 +73,15 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
   const [location, setLocation] = useState("");
   const [gender, setGender] = useState("");
   const [breed, setBreed] = useState("");
+  const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+      if (loggedInUser) {
+        setUser(JSON.parse(loggedInUser));
+      }
+  }, []);
+  
   function handleClick() {
     onSearch(location, gender, breed);
   }
@@ -80,7 +89,7 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
   function handleLocationChange(event: React.ChangeEvent<HTMLSelectElement>) {
     if (event.target.value === "Locations") {
       setLocation("");
-    }else{
+    } else {
       setLocation(event.target.value);
     }
   }
@@ -88,7 +97,7 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
   function handleGenderChange(event: React.ChangeEvent<HTMLSelectElement>) {
     if (event.target.value === "Gender") {
       setGender("");
-    }else{
+    } else {
       setGender(event.target.value);
     }
   }
@@ -96,7 +105,7 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
   function handleBreedChange(event: React.ChangeEvent<HTMLSelectElement>) {
     if (event.target.value === "Breeds") {
       setBreed("");
-    }else{
+    } else {
       setBreed(event.target.value);
     }
   }
@@ -133,9 +142,12 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
       <button className={styles.inputbtn} autoFocus onClick={handleClick}>
         <div className={styles.search}>Search</div>
       </button>
-      <button className={styles.inputbtn1} autoFocus>
-        <div className={styles.search}>Add</div>
-      </button>
+      {user === null ? null : 
+        (
+        <button className={styles.inputbtn1} autoFocus>
+          <div className={styles.search}>Add</div>
+        </button>
+        )}
     </div>
   );
 };
