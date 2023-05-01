@@ -5,8 +5,6 @@ import Button from "./Button";
 
 interface Props {
   onClose: () => void;
-  onRegister: () => void;
-  onLoginSucc: () => void;
 }
 
 const Add: FunctionComponent<Props> = ({ onClose }) => {

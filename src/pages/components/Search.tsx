@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import styles from "./Search.module.css";
 import { useState, useEffect } from 'react';
 import { User } from "../model/UserModel";
+import Add from "./Add";
 
 const catBreeds = [
   "Breeds",
@@ -74,14 +75,15 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
   const [gender, setGender] = useState("");
   const [breed, setBreed] = useState("");
   const [user, setUser] = useState<User | null>(null);
+  const [showAdd, setShowAdd] = useState(false);
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("user");
-      if (loggedInUser) {
-        setUser(JSON.parse(loggedInUser));
-      }
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+    }
   }, []);
-  
+
   function handleClick() {
     onSearch(location, gender, breed);
   }
@@ -109,6 +111,10 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
       setBreed(event.target.value);
     }
   }
+
+  const handleAddClose = () => {
+    setShowAdd(false);
+  };
 
   return (
     <div className={styles.divrow}>
@@ -142,12 +148,20 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
       <button className={styles.inputbtn} autoFocus onClick={handleClick}>
         <div className={styles.search}>Search</div>
       </button>
-      {user === null ? null : 
+      {user === null ? null :
         (
-        <button className={styles.inputbtn1} autoFocus>
-          <div className={styles.search}>Add</div>
-        </button>
+          <button 
+            className={styles.inputbtn1}
+            onClick={() => setShowAdd(true)}
+            autoFocus>
+            <div className={styles.search}>Add</div>
+          </button>
         )}
+      {showAdd && (
+        <Add
+          onClose={handleAddClose}
+        />
+      )}
     </div>
   );
 };
