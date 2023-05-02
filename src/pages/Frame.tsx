@@ -1,5 +1,8 @@
+"use client"
+
 import { FunctionComponent } from "react";
 import React, { useState, useEffect } from 'react';
+
 import Header from "./components/Header";
 import Card from "./components/Card";
 import Search from "./components/Search";
@@ -46,7 +49,7 @@ const Frame: FunctionComponent = () => {
       <div className={styles.divmainWrapper}>
         <div className={styles.sectionbreadcrumbBg}>
           <div className={styles.div}>
-            <div className={styles.petAdoption}>Pet Adoption</div>
+            <div className={styles.sectionbreadcrumbBg}>Pet Adoption</div>
           </div>
         </div>
         <div className={styles.divcontainer}>

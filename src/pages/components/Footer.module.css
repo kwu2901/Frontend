@@ -39,8 +39,8 @@
 }
 .divcopyrightIcon {
   position: relative;
-  width: 1920px;
-  height: 113.03px;
+  width: auto;
+  height: auto;
   flex-shrink: 0;
   object-fit: cover;
 }

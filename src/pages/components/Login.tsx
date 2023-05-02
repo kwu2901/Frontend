@@ -42,7 +42,6 @@ const Login: FunctionComponent<Props> = ({ onClose, onRegister, onLoginSucc }) =
       alert("Login Succ!");
       onLoginSucc();
     } catch (err) {
-      console.log(err.message);
       alert("Authentication failed");
     }
   };
@@ -56,15 +55,15 @@ const Login: FunctionComponent<Props> = ({ onClose, onRegister, onLoginSucc }) =
         <h3 className={styles.title}>Login</h3>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" required />
+            <label className={styles.label} htmlFor="email">Email:</label>
+            <input className={styles.input} type="email" id="email" name="email" required />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" required />
+            <label className={styles.label} htmlFor="password">Password:</label>
+            <input className={styles.input} type="password" id="password" name="password" required />
           </div>
           <div className={styles.formGroup}>
-            <button type="submit">Submit</button>
+            <button className={styles.button} type="submit">Submit</button>
           </div>
         </form>
         <div className={styles.form}>

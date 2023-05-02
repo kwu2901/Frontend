@@ -83,6 +83,7 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               Username:
             </label>
             <input
+              className={styles.input}
               type="text"
               id="username"
               value={username}
@@ -95,6 +96,7 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               Email:
             </label>
             <input
+              className={styles.input}
               type="email"
               id="email"
               value={email}
@@ -107,6 +109,7 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               Password:
             </label>
             <input
+              className={styles.input}
               type="password"
               id="password"
               value={password}
@@ -117,6 +120,7 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
           <div className={styles.formGroup}>
             <div>
               <input
+                className={styles.input}
                 type="checkbox"
                 id="staffCodeCheckbox"
                 checked={isChecked}
@@ -128,6 +132,7 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
             </div>
             {isChecked && (
               <input
+                className={styles.input}
                 type="text"
                 id="staffCode"
                 value={staffCode}
@@ -136,7 +141,7 @@ const Register: FunctionComponent<RegisterProps> = ({ onClose, onRegisterSucc })
               />
             )}
           </div>
-          <button type="submit" className={styles.submitButton}>
+          <button type="submit" className={styles.button}>
             Submit
           </button>
         </form>

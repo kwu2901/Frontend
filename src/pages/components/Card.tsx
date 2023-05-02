@@ -32,7 +32,7 @@ const Card: FunctionComponent<Props> = ({ cats }) => {
         <img
           className={styles.adopt23042300010630881324253Icon}
           alt=""
-          src="/adopt-230423000106308813242-5386079266jpg@2x.png"
+          src={cats.image}
         />
         <button className={styles.inputbtn2} autoFocus>
           <img className={styles.inputbtnChild} alt="" src="/star-2.svg" />

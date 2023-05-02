@@ -3,77 +3,15 @@ import styles from "./Search.module.css";
 import { useState, useEffect } from 'react';
 import { User } from "../model/UserModel";
 import Add from "./Add";
+import locations, { Location } from '../model/Location';
+import breeds, { Breed } from '../model/Breeds';
 
-const catBreeds = [
-  "Breeds",
-  "Abyssinian",
-  "American Bobtail",
-  "American Curl",
-  "American Shorthair",
-  "American Wirehair",
-  "Balinese",
-  "Bengal",
-  "Birman",
-  "Bombay",
-  "British Shorthair",
-  "Burmese",
-  "Burmilla",
-  "Chartreux",
-  "Chausie",
-  "Cornish Rex",
-  "Cymric",
-  "Devon Rex",
-  "Egyptian Mau",
-  "Exotic Shorthair",
-  "Havana Brown",
-  "Himalayan",
-  "Japanese Bobtail",
-  "Javanese",
-  "Korat",
-  "LaPerm",
-  "Maine Coon",
-  "Manx",
-  "Munchkin",
-  "Nebelung",
-  "Norwegian Forest",
-  "Ocicat",
-  "Oriental",
-  "Persian",
-  "Pixiebob",
-  "Ragdoll",
-  "Russian Blue",
-  "Savannah",
-  "Scottish Fold",
-  "Selkirk Rex",
-  "Siamese",
-  "Siberian",
-  "Singapura",
-  "Snowshoe",
-  "Somali",
-  "Sphynx",
-  "Tonkinese",
-  "Turkish Angora",
-  "Turkish Van"
-];
 
-const locations = [
-  "Locations",
-  "Central",
-  "Causeway Bay",
-  "Tsim Sha Tsui",
-  "Mong Kok",
-  "Wan Chai",
-  "Sheung Wan",
-  "Admiralty",
-  "Quarry Bay",
-  "Yau Ma Tei",
-  "Sham Shui Po",
-];
 
 const Search: FunctionComponent<{ onSearch: (location: string, gender: string, breed: string) => void }> = ({ onSearch }) => {
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState<Location>("");
   const [gender, setGender] = useState("");
-  const [breed, setBreed] = useState("");
+  const [breed, setSelectedBreed] = useState<Breed>("");
   const [user, setUser] = useState<User | null>(null);
   const [showAdd, setShowAdd] = useState(false);
 
@@ -88,13 +26,13 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
     onSearch(location, gender, breed);
   }
 
-  function handleLocationChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value === "Locations") {
       setLocation("");
     } else {
-      setLocation(event.target.value);
+      setLocation(event.target.value as Location);
     }
-  }
+  };
 
   function handleGenderChange(event: React.ChangeEvent<HTMLSelectElement>) {
     if (event.target.value === "Gender") {
@@ -103,25 +41,26 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
       setGender(event.target.value);
     }
   }
-
-  function handleBreedChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  
+  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value === "Breeds") {
-      setBreed("");
+      setSelectedBreed("");
     } else {
-      setBreed(event.target.value);
+      setSelectedBreed(event.target.value as Breed);
     }
   }
 
   const handleAddClose = () => {
     setShowAdd(false);
+    window.re
   };
 
   return (
     <div className={styles.divrow}>
       <div className={styles.selectarea}>
         <div id="locationDropdown" className={styles.div}>
-          <select className={styles.location} onChange={handleLocationChange}>
-            {locations.map((location) => (
+          <select id="location" value={location} onChange={handleLocationChange}>
+            {locations.map(location => (
               <option key={location} value={location}>{location}</option>
             ))}
           </select>
@@ -131,16 +70,16 @@ const Search: FunctionComponent<{ onSearch: (location: string, gender: string, b
         <div id="genderDropdown" className={styles.div}>
           <select className={styles.location} onChange={handleGenderChange}>
             <option value="Gender">Gender</option>
-            <option value="male">male</option>
-            <option value="female">female</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </select>
         </div>
       </div>
       <div className={styles.selectanimal}>
         <div id="breedDropdown" className={styles.div}>
-          <select className={styles.location} onChange={handleBreedChange}>
-            {catBreeds.map((breed, index) => (
-              <option key={index} value={breed}>{breed}</option>
+          <select className={styles.location} id="breed" value={breed} onChange={handleBreedChange}>
+            {breeds.map(breed => (
+              <option key={breed} value={breed}>{breed}</option>
             ))}
           </select>
         </div>

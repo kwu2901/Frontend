@@ -1,48 +1,91 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent,useState } from "react";
 import styles from "./Add.module.css";
-import { User } from "../model/UserModel";
-import Button from "./Button";
+import ImageUpload from './ImageUpload';
+import locations, { Location } from '../model/Location';
+import breeds, { Breed } from '../model/Breeds';
 
 interface Props {
   onClose: () => void;
 }
 
+
+interface FormData {
+  cat_name: string;
+  age: string;
+  breed: string;
+  gender: string;
+  location: string;
+  describe: string;
+  image: string;
+}
+
 const Add: FunctionComponent<Props> = ({ onClose }) => {
+  const [image, setImage] = useState<string>('');
+  const [location, setLocation] = useState<Location>(locations[0]);
+  const [gender, setGender] = useState("");
+  const [breed, setSelectedBreed] = useState<Breed>("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const image = event.currentTarget.email.value;
-    const name = event.currentTarget.password.value;
-    const age = event.currentTarget.email.value;
-    const gender = event.currentTarget.password.value;
-    const location = event.currentTarget.email.value;
-    const breed = event.currentTarget.password.value;
-    const describe = event.currentTarget.email.value;
+
+    const formData: FormData = {
+      cat_name: event.currentTarget.cat_name.value,
+      age: event.currentTarget.age.value,
+      breed: event.currentTarget.breed.value,
+      gender: gender,
+      location: location,
+      describe: event.currentTarget.describe.value,
+      image: image,
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(formData),
+    };
 
     try {
-      //const response = await fetch("https://backend.kwu2901.repl.co/Login", {
-      //  method: "POST",
-      //  headers: { "Content-Type": "application/json" },
-      //  body: JSON.stringify({
-      //    email,
-      //    password
-      //  }),
-      //});
-      //if (!response.ok) {
-      //  alert("Invalid email or password.");
-      //  return;
-      //}
-      //const { token, user }: LoginResponse = await response.json();
-      //localStorage.setItem("token", token);
-      //localStorage.setItem("user", JSON.stringify(user));
-      //alert("Login Succ!");
-      //onLoginSucc();
-    } catch (err) {
-      //console.log(err.message);
-      //alert("Authentication failed");
+      const response = await fetch('https://backend.kwu2901.repl.co/AddCat', options);
+      const data = await response.json();
+      console.log(data);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };  
+
+  const handleImageChange = async (value: string) => {
+    setImage(value);
+  };  
+
+  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (event.target.value === "Locations") {
+      setLocation("");
+    } else {
+      setLocation(event.target.value as Location);
     }
   };
 
+  function handleGenderChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    if (event.target.value === "Gender") {
+      setGender("");
+    } else {
+      setGender(event.target.value);
+    }
+  }
+
+  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    if (event.target.value === "Breeds") {
+      setSelectedBreed("");
+    } else {
+      setSelectedBreed(event.target.value as Breed);
+    }
+  }
+
+  
   return (
     <div className={styles.modal}>
       <div className={styles.modalContent}>
@@ -52,41 +95,48 @@ const Add: FunctionComponent<Props> = ({ onClose }) => {
         <h3 className={styles.title}>Edit</h3>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label htmlFor="image">Image:</label>
-            <input type="image" id="image" name="image" required />
+            <label className={styles.label} htmlFor="image">Image:</label>
+            <ImageUpload onChange={handleImageChange} value={image} />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Cat Name:</label>
-            <input type="name" id="name" name="name" required />
+            <label className={styles.label} htmlFor="cat_name">Cat Name:</label>
+            <input className={styles.input} type="cat_name" id="cat_name" name="cat_name" required />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="age">Age:</label>
-            <input type="age" id="age" name="age" required />
+            <label className={styles.label} htmlFor="age">Age:</label>
+            <input className={styles.input} type="age" id="age" name="age" required />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="gender">Gender:</label>
-            <input type="gender" id="gender" name="gender" required />
+            <label className={styles.label} htmlFor="gender">Gender:</label>
+            <select className={styles.select} onChange={handleGenderChange}>
+              <option value="Gender">Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>        </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="location">Location:</label>
+            <select className={styles.select} id="location" value={location} onChange={handleLocationChange}>
+            {locations.map(location => (
+              <option key={location} value={location}>{location}</option>
+            ))}
+          </select>
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="location">Location:</label>
-            <input type="location" id="location" name="location" required />
+            <label className={styles.label} htmlFor="breed">Breed:</label>
+            <select className={styles.select} id="breed" value={breed} onChange={handleBreedChange}>
+            {breeds.map(breed => (
+              <option key={breed} value={breed}>{breed}</option>
+            ))}
+          </select>         
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="breed">Breed:</label>
-            <input type="breed" id="breed" name="breed" required />
+            <label className={styles.label} htmlFor="describe">Describe:</label>
+            <input className={styles.input} type="describe" id="describe" name="describe" required />
           </div>
           <div className={styles.formGroup}>
-            <label htmlFor="describe">Describe:</label>
-            <input type="describe" id="describe" name="describe" required />
-          </div>
-          <div className={styles.formGroup}>
-            <button type="submit">Submit</button>
+            <button className={styles.button} type="submit">Submit</button>
           </div>
         </form>
-
-        <div className={styles.register}>
-          <button >Del</button>
-        </div>
       </div>
     </div>
   );
